@@ -28,7 +28,7 @@ public class anonymousThreat {
                 String newWord = "";
                 int iterations = 0;
 
-                for (int i = Math.max(0, start); i < Math.min(end, words.size() -1); i++) {
+                for (int i = Math.max(0, start); i <= Math.min(end, words.size() -1); i++) {
                     newWord  = newWord + words.get(i);
                     iterations += 1;
                 }
@@ -43,6 +43,9 @@ public class anonymousThreat {
                 int index = Integer.parseInt(shredded[1]);
                 int numberOfPartitions = Integer.parseInt(shredded[2]);
                 String [] currentWord = words.get(index).split("");
+                System.out.println(Arrays.toString(currentWord));
+                System.out.println(currentWord.length);
+                System.out.println(numberOfPartitions);
 
                 List<String> temp = new ArrayList<>();
 
@@ -54,8 +57,31 @@ public class anonymousThreat {
                         }
                         temp.add(interTemp);
                     }
+                } else {
+                    int biggestPrevDivisor = (currentWord.length / numberOfPartitions) * numberOfPartitions;
+
+                    for (int i = 0; i < (biggestPrevDivisor - currentWord.length / numberOfPartitions); i+=currentWord.length / numberOfPartitions) {
+                        String interTemp = "";
+                        for (int j = i; j < i + currentWord.length / numberOfPartitions; j++) {
+                            interTemp = interTemp + currentWord[j];
+                        }
+                        temp.add(interTemp);
+                    }
+                    String finalTemp = "";
+                    for (int i = biggestPrevDivisor - (currentWord.length / numberOfPartitions); i < currentWord.length; i++) {
+                        finalTemp = finalTemp + currentWord[i];
+                    }
+                    temp.add(finalTemp);
+
                 }
                 // TODO: Finish the task
+
+                words.remove(index);
+                System.out.println(temp);
+
+                for (int i = temp.size() - 1; i >= 0; i--) {
+                    words.add(index, temp.get(i));
+                }
 
             }
 
@@ -65,3 +91,8 @@ public class anonymousThreat {
         System.out.println(words);
     }
 }
+
+//abcd efgh ijkl mnop qrst uvwx yzqwAaZ
+//merge 4 10
+//divide 4 5
+//3:1
